@@ -1,0 +1,23 @@
+name: Deployment Workflow
+on:
+  push:
+    branches: [master]
+
+jobs:
+  job_one:
+    name: Deploy
+    runs-on: ubuntu-18.04
+    steps:
+    - name: testing 172.104.165.240 server ssh connection
+      uses: appleboy/ssh-action@master
+      with:
+        host: 172.104.165.240
+        username: daniel
+        key: ${{secrets.LINODE_GITHUB_ACTION_PRIVATE_KEY}}
+        port: 22
+        script: |
+          cd ~/Sleep
+          git remote -v
+          git pull origin master
+          git status
+          echo "Deployed"
